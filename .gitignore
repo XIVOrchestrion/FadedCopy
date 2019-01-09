@@ -10,6 +10,8 @@
 
 # production
 /build
+/src/scripts/secret/*.*
+!/src/scripts/secret/*.md
 
 # misc
 .DS_Store
