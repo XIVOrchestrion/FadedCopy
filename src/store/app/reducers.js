@@ -3,6 +3,7 @@ import * as types from '../constants'
 export function appReducer(
   state = {
     user: false,
+    isAuthenticated: false,
   },
   action
 ) {
@@ -10,11 +11,13 @@ export function appReducer(
     case types.CHECK_USER_DATA:
       return Object.assign({}, state, {
         user: action.user,
+        isAuthenticated: action.uid,
       })
 
     case types.USER_REGISTER_SUCCESS:
       return Object.assign({}, state, {
-
+        user: action.user,
+        isAuthenticated: action.uid,
       })
 
     case types.USER_REGISTER_ERROR:
@@ -25,6 +28,7 @@ export function appReducer(
     case types.USER_LOGIN_SUCCESS:
       return Object.assign({}, state, {
         user: action.user,
+        isAuthenticated: action.uid,
       })
 
     case types.USER_LOGIN_ERROR:
@@ -35,6 +39,7 @@ export function appReducer(
     case types.USER_LOGOUT_SUCCESS:
       return Object.assign({}, state, {
         user: action.user,
+        isAuthenticated: false,
       })
 
     case types.USER_LOGOUT_ERROR:

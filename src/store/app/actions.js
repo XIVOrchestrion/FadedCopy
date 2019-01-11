@@ -1,12 +1,18 @@
 import * as types from '../constants'
-import { firebaseAuth } from '../../scripts/firebase'
+import { firebaseAuth } from '../../scripts'
 
 export const checkUserData = () => dispatch => {
   firebaseAuth.onAuthStateChanged(user => {
     if (user)
       dispatch({
         type: types.CHECK_USER_DATA,
-        user: user
+        user: {
+          displayName: user.displayName,
+          email: user.email,
+          emailVerified: user.emailVerified,
+          uid: user.uid,
+        },
+        uid: user.uid,
       })
     else
       dispatch({
@@ -16,14 +22,40 @@ export const checkUserData = () => dispatch => {
   })
 }
 
-export const userSignUp = async (email, password, displayName) => {
+
+export const userSignUp = (email, password, displayName) => dispatch => {
   firebaseAuth.createUserWithEmailAndPassword(email, password)
-    .then(() => firebaseAuth.currentUser.updateProfile({ displayName }))
-    .then(() => {})
-    .catch(error => console.log(error))
+    .then((response) => {
+      firebaseAuth.currentUser.updateProfile({ displayName })
+      return response
+    })
+    .then((response) => dispatch(userSignUpSuccess(response)))
+    .catch(error => dispatch(userSignUpError(error)))
 }
 
-export const userLogin = (email, password, cb) => dispatch => {
+const userSignUpSuccess = (response) => ({
+  type: types.USER_REGISTER_SUCCESS,
+  user: {
+    displayName: response.user.displayName,
+    email: response.user.email,
+    emailVerified: response.user.emailVerified,
+    uid: response.user.uid,
+  },
+  uid: response.user.uid,
+})
+
+const userSignUpError = response => ({
+  type: types.USER_REGISTER_ERROR,
+  userError: response,
+})
+
+
+/**
+ *
+ * @param {string} email The user's email address for sign in
+ * @param {string} password The user's password for sign in
+ */
+export const userLogin = (email, password) => dispatch => {
   firebaseAuth.signInWithEmailAndPassword(email, password)
     .then(response => {
       dispatch(userLoginSuccess(response))
@@ -39,7 +71,8 @@ const userLoginSuccess = response => ({
     email: response.user.email,
     emailVerified: response.user.emailVerified,
     uid: response.user.uid,
-  }
+  },
+  uid: response.user.uid,
 })
 
 const userLoginError = response => ({
@@ -47,9 +80,17 @@ const userLoginError = response => ({
   userError: response,
 })
 
-export const userLogout = () => dispatch => {
+
+/**
+ *
+ * @param {function} cb Updates the router history to push user back to the homepage on successful logout
+ */
+export const userLogout = (cb) => dispatch => {
   firebaseAuth.signOut()
-    .then(() => dispatch(userLogoutSuccess()))
+    .then(() => {
+      cb()
+      dispatch(userLogoutSuccess())
+    })
     .catch(error => console.log(error))
 }
 
