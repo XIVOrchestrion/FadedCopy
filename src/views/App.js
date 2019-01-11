@@ -1,35 +1,24 @@
 import React, { Component } from 'react'
-import { Switch, Route, Redirect, Link } from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { checkUserData, userLogout } from '../store/app'
+import { checkUserData } from '../store/app'
+
+import { Header } from '../components'
 
 import {
   Login,
+  Register,
   Settings,
-  Welcome,
+  Home,
 } from './pages'
 
-import './App.css'
+import './App.scss'
 
 class App extends Component {
   componentDidMount() {
     this.props.checkUserData()
-  }
-
-  loginRoute = ({ component: Component, ...rest }) => {
-    const auth = this.props.user
-    return (
-      <Route
-        {...rest}
-        render={props =>
-          auth
-            ? <Redirect to={{ pathname: '/settings', state: { from: props.location } }} />
-            : <Component {...props} />
-        }
-      />
-    )
   }
 
   privateRoute = ({ component: Component, ...rest }) => {
@@ -51,10 +40,9 @@ class App extends Component {
       user
     } = this.props
 
-    const LoginRoute = this.loginRoute
     const PrivateRoute = this.privateRoute
 
-    if (this.props.user === false) {
+    if (user === false) {
       return (
         <div className="App">
 
@@ -64,18 +52,14 @@ class App extends Component {
 
     return (
       <div className="App">
-        <Link to={{ pathname: '/login', state: { from: this.props.location } }}>Log in</Link>
-        {user &&
-          <button onClick={this.props.userLogout}>
-            Log out
-          </button>
-        }
+        <Header location={this.props.location} />
 
         <Switch>
-          <Route exact path={`${process.env.PUBLIC_URL}/`} component={Welcome} />
+          <Route exact path={`${process.env.PUBLIC_URL}/`} component={Home} />
           <Route path={`${process.env.PUBLIC_URL}/login`} component={Login} />
-          <LoginRoute path={`${process.env.PUBLIC_URL}/register`} component={Login} />
+          <Route path={`${process.env.PUBLIC_URL}/register`} component={Register} />
           <PrivateRoute path={`${process.env.PUBLIC_URL}/settings`} component={Settings} />
+          <PrivateRoute path={`${process.env.PUBLIC_URL}/settings/profile`} component={Settings} />
         </Switch>
       </div>
     )
@@ -83,16 +67,16 @@ class App extends Component {
 }
 
 const mapStateToProps = state => {
-  const { user } = state.app
+  const { isAuthenticated, user } = state.app
 
   return {
+    isAuthenticated,
     user,
   }
 }
 
 const mapDispatchToProps = dispatch => ({
   checkUserData: bindActionCreators(checkUserData, dispatch),
-  userLogout: bindActionCreators(userLogout, dispatch),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
