@@ -13,15 +13,20 @@ class Rolls extends React.Component {
 
   render() {
 
-    console.log(this.props.songs)
+    if (!this.props.songs)
+      return (
+        <main>
+          <span>Loading songs</span>
+        </main>
+      )
 
     return (
       <main>
-        <h1>Hello DASHBOARD world</h1>
         {this.props.songs.map(item => (
           <SongCard
             key={item.id}
             {...item}
+            tracking
           />
         ))}
       </main>
