@@ -1,0 +1,14 @@
+.characters {
+  display: block;
+  padding: 1rem;
+  background-color: #eee;
+}
+
+.characterList {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.characterPanel {
+  flex: 0 1 25%;
+}
