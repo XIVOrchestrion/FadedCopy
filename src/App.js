@@ -14,7 +14,7 @@ import { Header } from './components'
 //   Home,
 // } from './views'
 
-import './App.scss'
+import styles from './App.module.scss'
 
 class App extends Component {
   componentDidMount() {
@@ -75,6 +75,16 @@ class App extends Component {
 
           <Redirect from="/settings" to="/settings/profile" />
         </Switch>
+
+        <footer className={styles.footer}>
+          <div>
+            <span>FINAL FANTASY is a registered trademark of Square Enix Holdings Co., Ltd.</span>
+            <span>FINAL FANTASY XIV © SQUARE ENIX CO., LTD.</span>
+          </div>
+          <div>
+            Assembled by Mayo Steakfries of Coeurl
+          </div>
+        </footer>
       </div>
     )
   }
