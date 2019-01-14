@@ -7,6 +7,7 @@ firebase.initializeApp(firebaseConfig)
 
 export const firebaseAuth = firebase.auth()
 export const firebaseStore = firebase.firestore()
+export const firebaseStoreValue = firebase.firestore.FieldValue
 
 firebaseStore.settings({
   timestampsInSnapshots: true

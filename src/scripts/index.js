@@ -1,1 +1,5 @@
-export { firebaseAuth, firebaseStore } from './firebase'
+export {
+  firebaseAuth,
+  firebaseStore,
+  firebaseStoreValue,
+} from './firebase'
