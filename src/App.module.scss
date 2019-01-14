@@ -1,4 +1,6 @@
+@import 'styles/variables';
+
 .footer {
-  margin-top: 1rem;
+  margin-top: $spacing-large;
   font-size: .75rem;
 }
