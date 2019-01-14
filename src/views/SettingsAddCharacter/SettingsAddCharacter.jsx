@@ -169,13 +169,13 @@ class SettingsAddCharacter extends React.Component {
             <Button handleClick={this.handleClipboardCopy}>
               Copy to clipboard
             </Button>
-            <button onClick={this.handleTokenCheck}>
+            <Button handleClick={this.handleTokenCheck}>
               {pass ? (
                 <span>Verified!</span>
               ) : (
                 <span>Refresh</span>
               )}
-            </button>
+            </Button>
             <span>
               Edit your bio at <a href="https://eu.finalfantasyxiv.com/lodestone/my/setting/profile/" target="_blank" rel="noopener noreferrer">The Lodestone</a> to include your unique authorisation token. When you're done, return here to continue.
             </span>

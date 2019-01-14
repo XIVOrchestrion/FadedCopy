@@ -1,9 +1,20 @@
+@import 'styles/variables';
+
 .characterList {
   display: block;
+  margin: $spacing-base 0;
 }
 
 .characterEntry {
   display: flex;
   align-items: center;
   flex-flow: row nowrap;
+}
+
+.characterField {
+  margin-right: $spacing-base;
+
+  :last-of-type {
+    margin-right: 0;
+  }
 }

@@ -18,6 +18,14 @@ const Settings = ({
   return(
     <SettingsTemp>
       <div>
+        <h3>
+          My characters
+        </h3>
+
+        <Button tag="link" to="/settings/profile/new">
+          Add Character
+        </Button>
+
         {userData && userData.characters &&
           <ul className={styles.characterList}>
             {Object.keys(userData.characters).map(key => {
@@ -28,15 +36,20 @@ const Settings = ({
                   className={styles.characterEntry}
                 >
                   <Character
+                    classes={styles.characterField}
                     avatar={char.avatar}
                     id={char.id}
                     name={char.name}
                     server={char.server}
                   />
-                  <span>
+                  <span className={styles.characterField}>
                     {char.added.toDate().toUTCString()}
                   </span>
-                  <Button handleClick={() => props.removeCharacter(char.id)}>
+                  <Button
+                    classes={styles.characterField}
+                    handleClick={() => props.removeCharacter(char.id)}
+                    disabled
+                  >
                     Delete character
                   </Button>
                 </li>
@@ -44,9 +57,6 @@ const Settings = ({
             })}
           </ul>
         }
-        <Button tag="link" to="/settings/profile/new">
-          Add Character
-        </Button>
       </div>
     </SettingsTemp>
   )
