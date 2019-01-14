@@ -1,22 +1,15 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
+import { version } from '../package.json'
 import { checkUserData } from './store/app'
 import { routes, privateRoutes } from './routes'
-import { Header } from './components'
-
-// import {
-//   Login,
-//   Register,
-//   Settings,
-//   Home,
-// } from './views'
-
+import { Header, Alert } from './components'
 import styles from './App.module.scss'
 
-class App extends Component {
+class App extends React.Component {
   componentDidMount() {
     this.props.checkUserData()
   }
@@ -53,6 +46,12 @@ class App extends Component {
     return (
       <div className="App">
         <Header location={this.props.location} />
+
+        <Alert
+          type="warning"
+        >
+          Welcome to the FadedCopy ({ version }) ALPHA Test Site. Expect bugs.
+        </Alert>
 
         <Switch>
           {routes.map(({path, component}, key) => (
