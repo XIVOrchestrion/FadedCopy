@@ -49,7 +49,6 @@ const characterResultsError = (error) => ({
  */
 export const selectCharacter = (character) => (dispatch, getState) => {
   const { app } = getState()
-  const userStore = firebaseStore.collection('users').doc(app.user.uid)
 
   if (app.userData.characters)
     if (app.userData.characters[character.ID])

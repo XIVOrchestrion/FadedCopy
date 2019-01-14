@@ -69,6 +69,11 @@ class Login extends React.Component {
   }
 }
 
+Login.propTypes = {
+  user: PropTypes.object,
+  userLogin: PropTypes.func,
+}
+
 const mapStateToProps = (state) => ({
   user: state.app.user,
 })

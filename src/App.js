@@ -63,6 +63,7 @@ class App extends Component {
               component={component}
             />
           ))}
+
           {privateRoutes.map(({path, component}, key) => (
             <PrivateRoute
               key={key}
@@ -71,11 +72,8 @@ class App extends Component {
               component={component}
             />
           ))}
-          {/* <Route exact path={`${process.env.PUBLIC_URL}/`} component={Home} />
-          <Route path={`${process.env.PUBLIC_URL}/login`} component={Login} />
-          <Route path={`${process.env.PUBLIC_URL}/register`} component={Register} />
-          <PrivateRoute path={`${process.env.PUBLIC_URL}/settings`} component={Settings} />
-          <PrivateRoute path={`${process.env.PUBLIC_URL}/settings/profile`} component={Settings} /> */}
+
+          <Redirect from="/settings" to="/settings/profile" />
         </Switch>
       </div>
     )
