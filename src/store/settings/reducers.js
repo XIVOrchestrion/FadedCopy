@@ -39,9 +39,14 @@ export function settingsReducer(
       })
 
     case types.CHARACTER_AUTH_CHECK:
-    return Object.assign({}, state, {
-      pass: action.pass,
-    })
+      return Object.assign({}, state, {
+        pass: action.pass,
+      })
+
+    case types.CHARACTER_VERIFIED:
+      return Object.assign({}, state, {
+        verified: action.verified,
+      })
 
     default:
       return state

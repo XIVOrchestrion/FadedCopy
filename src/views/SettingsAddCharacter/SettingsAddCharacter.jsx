@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-// import debounce from 'lodash.debounce'
 
+import { SettingsTemp } from '../../templates'
 import { Character } from '../../components'
 import {
   checkCharacterToken,
@@ -13,7 +14,7 @@ import {
 import { servers } from '../../data'
 import styles from './SettingsAddCharacter.module.scss'
 
-class Settings extends React.Component {
+class SettingsAddCharacter extends React.Component {
   constructor(props) {
     super(props)
 
@@ -51,10 +52,13 @@ class Settings extends React.Component {
       results,
       searching,
       token,
+      verified
     } = this.props
 
+    if (verified) return <Redirect to={'/settings/profile'} />
+
     return(
-      <main>
+      <SettingsTemp>
         {error &&
           <span>
             { error }
@@ -167,12 +171,12 @@ class Settings extends React.Component {
             </span>
           </div>
         }
-      </main>
+      </SettingsTemp>
     )
   }
 }
 
-Settings.propTypes = {
+SettingsAddCharacter.propTypes = {
   character: PropTypes.object,
   loaded: PropTypes.bool,
   pagination: PropTypes.object,
@@ -180,6 +184,10 @@ Settings.propTypes = {
   results: PropTypes.array,
   searching: PropTypes.bool,
   token: PropTypes.string,
+  /**
+   * If `true` the character has been successfully verified
+   */
+  verified: PropTypes.bool,
 }
 
 const mapStateToProps = (state) => ({
@@ -191,6 +199,7 @@ const mapStateToProps = (state) => ({
   results: state.settings.results,
   searching: state.settings.searching,
   token: state.settings.token,
+  verified: state.settings.verified,
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -199,4 +208,4 @@ const mapDispatchToProps = (dispatch) => ({
   selectCharacter: bindActionCreators(selectCharacter, dispatch),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Settings)
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsAddCharacter)

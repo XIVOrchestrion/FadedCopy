@@ -51,12 +51,13 @@ export const selectCharacter = (character) => (dispatch, getState) => {
   const { app } = getState()
   const userStore = firebaseStore.collection('users').doc(app.user.uid)
 
-  if (app.userData.characters[character.ID])
-    return dispatch({
-      type: types.CHARACTER_SELECT_ERROR,
-      searching: false,
-      error: `${character.Name} has already been verified on your account!`
-    })
+  if (app.userData.characters)
+    if (app.userData.characters[character.ID])
+      return dispatch({
+        type: types.CHARACTER_SELECT_ERROR,
+        searching: false,
+        error: `${character.Name} has already been verified on your account!`
+      })
 
   const dec2hex = (dec) => (`0${dec.toString(16)}`).substr(-2)
 
@@ -96,7 +97,7 @@ export const checkCharacterToken = (token) => (dispatch, getState) => {
     .then(res => {
       dispatch(characterAuth(res))
       if (res.Pass)
-        addCharacterToUser(character, app.user.uid)
+        dispatch(addCharacterToUser(character, app.user.uid))
     })
     .catch(error => dispatch(characterAuthError(error)))
 }
@@ -116,7 +117,7 @@ const characterAuthError = (error) => {
  * @param {*} character
  * @param {*} uid
  */
-const addCharacterToUser = (character, uid) => {
+const addCharacterToUser = (character, uid) => dispatch => {
   const userStore = firebaseStore.collection('users').doc(uid)
   const post = {}
   const data = {
@@ -140,6 +141,11 @@ const addCharacterToUser = (character, uid) => {
           verified: true,
         })
     })
-    .then(() => console.log('success'))
+    .then(() => dispatch(characterVerified()))
     .catch(error => {})
 }
+
+const characterVerified = () => ({
+  type: types.CHARACTER_VERIFIED,
+  verified: true,
+})
