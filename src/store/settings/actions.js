@@ -2,6 +2,11 @@ import * as types from '../constants'
 import xivapiKey from '../../scripts/secret/xivapiKey'
 import { firebaseStore, firebaseStoreValue } from '../../scripts'
 
+
+export const removeCharacter = (id) => dispatch => {
+  console.log("This would normally delete the character")
+}
+
 /**
  *
  * @param {string} name Character Name to search for

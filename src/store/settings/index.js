@@ -1,5 +1,6 @@
 export {
   checkCharacterToken,
+  removeCharacter,
   searchCharacter,
   selectCharacter,
 } from './actions'
