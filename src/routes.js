@@ -23,7 +23,7 @@ export const routes = [
 
 export const privateRoutes = [
   {
-    path: '/settings',
+    path: '/settings/profile',
     component: Settings,
   },
   {
