@@ -95,7 +95,7 @@ export const checkCharacterToken = (token) => (dispatch, getState) => {
     .then(res => res.json())
     .then(res => {
       dispatch(characterAuth(res))
-      if (!res.Pass)
+      if (res.Pass)
         addCharacterToUser(character, app.user.uid)
     })
     .catch(error => dispatch(characterAuthError(error)))
