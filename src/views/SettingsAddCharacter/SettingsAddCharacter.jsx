@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import { SettingsTemp } from '../../templates'
-import { Character } from '../../components'
+import { Button, Character } from '../../components'
 import {
   checkCharacterToken,
   searchCharacter,
@@ -41,6 +41,16 @@ class SettingsAddCharacter extends React.Component {
     this.props.checkCharacterToken(this.authToken.current.value)
 
     return
+  }
+
+  handleClipboardCopy = () => {
+    this.authToken.current.select()
+
+    try {
+      document.execCommand('copy')
+    } catch(error) {
+
+    }
   }
 
   render() {
@@ -156,9 +166,9 @@ class SettingsAddCharacter extends React.Component {
                 ref={this.authToken}
               />
             </label>
-            <button>
+            <Button handleClick={this.handleClipboardCopy}>
               Copy to clipboard
-            </button>
+            </Button>
             <button onClick={this.handleTokenCheck}>
               {pass ? (
                 <span>Verified!</span>
