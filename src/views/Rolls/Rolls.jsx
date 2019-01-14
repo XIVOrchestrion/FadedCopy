@@ -6,7 +6,7 @@ import { fetchSongsIfNeeded } from '../../store/dashboard'
 
 import { SongCard } from '../../components'
 
-class Dashboard extends React.Component {
+class Rolls extends React.Component {
   componentDidMount() {
     this.props.fetchSongsIfNeeded()
   }
@@ -49,4 +49,4 @@ const mapDispatchToProps = (dispatch) => ({
   fetchSongsIfNeeded: bindActionCreators(fetchSongsIfNeeded, dispatch),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
+export default connect(mapStateToProps, mapDispatchToProps)(Rolls)

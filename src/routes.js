@@ -2,14 +2,19 @@ import {
   Home,
   Login,
   Register,
+  Rolls,
   Settings,
   SettingsAddCharacter,
-} from "./views";
+} from "./views"
 
 export const routes = [
   {
     path: '/',
     component: Home,
+  },
+  {
+    path: '/rolls',
+    component: Rolls,
   },
   {
     path: '/login',
