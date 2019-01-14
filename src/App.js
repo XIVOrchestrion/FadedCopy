@@ -50,7 +50,7 @@ class App extends React.Component {
         <Alert
           type="warning"
         >
-          Welcome to the FadedCopy ({ version }) ALPHA Test Site. Expect bugs.
+          Welcome to the FadedCopy ({ version }) ALPHA Test Site. Expect bugs everywhere.
         </Alert>
 
         <Switch>
