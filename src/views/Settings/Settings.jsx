@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 // import { bindActionCreators } from 'redux'
 
 import { SettingsTemp } from '../../templates'
-import { Character } from '../../components'
+import { Button, Character } from '../../components'
 
 const Settings = ({
   user,
@@ -30,6 +30,9 @@ const Settings = ({
             })}
           </ul>
         }
+        <Button tag="link" to="/settings/profile/new">
+          Add Character
+        </Button>
       </div>
     </SettingsTemp>
   )
