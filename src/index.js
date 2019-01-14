@@ -6,7 +6,8 @@ import { Provider } from 'react-redux'
 import configureStore from './store/store'
 
 import './index.css'
-import App from './views/App'
+import './reset.css'
+import App from './App'
 import * as serviceWorker from './serviceWorker'
 
 const AppRoute = props => ( <App location={props.location} /> )
