@@ -24,10 +24,17 @@ class Header extends React.Component {
 
     return (
       <header className={styles.root}>
+        <Link to="/">
+          { user ? 'Tracking' : 'Home' }
+        </Link>
+
         {user ? (
-          <button onClick={this.handleLogout}>
-            Log out
-          </button>
+          <span>
+            <Link to="/settings/profile">Settings</Link>
+            <button onClick={this.handleLogout}>
+              Log out
+            </button>
+          </span>
         ) : (
           <span>
             <Link to={{ pathname: '/register', state: { from: location } }}>Register</Link>
