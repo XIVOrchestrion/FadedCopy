@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "classnames": "^2.2.6",
     "lodash": "^4.17.11",
     "node-sass": "^4.11.0",
     "react": "^16.7.0",
@@ -17,6 +18,9 @@
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.7",
     "redux-thunk": "^2.3.0"
+  },
+  "peerDependencies": {
+    "@firebase/app-types": "0.x"
   },
   "scripts": {
     "start": "react-scripts start",
