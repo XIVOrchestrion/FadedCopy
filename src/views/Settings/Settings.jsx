@@ -1,12 +1,47 @@
 import React from 'react'
-import { SettingsTemp } from '../../templates'
+import { connect } from 'react-redux'
+// import { bindActionCreators } from 'redux'
 
-const Settings = props => {
+import { SettingsTemp } from '../../templates'
+import { Character } from '../../components'
+
+const Settings = ({
+  user,
+  userData
+}) => {
   return(
     <SettingsTemp>
-      Settings
+      <div>
+        {userData && userData.characters &&
+          <ul>
+            {Object.keys(userData.characters).map(key => {
+              const char = userData.characters[key]
+              return (
+                <li key={char.id}>
+                  <Character
+                    avatar={char.avatar}
+                    id={char.id}
+                    name={char.name}
+                    server={char.server}
+                  />
+
+                </li>
+              )
+            })}
+          </ul>
+        }
+      </div>
     </SettingsTemp>
   )
 }
 
-export default Settings
+const mapStateToProps = (state) => ({
+  user: state.app.user,
+  userData: state.app.userData,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Settings)
+
