@@ -18,6 +18,9 @@ const Settings = ({
   return(
     <SettingsTemp>
       <div>
+        <h2>
+          Profile
+        </h2>
         <h3>
           My characters
         </h3>
