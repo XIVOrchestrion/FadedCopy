@@ -1,0 +1,9 @@
+.characterList {
+  display: block;
+}
+
+.characterEntry {
+  display: flex;
+  align-items: center;
+  flex-flow: row nowrap;
+}

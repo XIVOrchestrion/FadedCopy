@@ -1,30 +1,44 @@
 import React from 'react'
 import { connect } from 'react-redux'
-// import { bindActionCreators } from 'redux'
+import { bindActionCreators } from 'redux'
+
+import {
+  removeCharacter,
+} from '../../store/settings'
 
 import { SettingsTemp } from '../../templates'
 import { Button, Character } from '../../components'
+import styles from './Settings.module.scss'
 
 const Settings = ({
   user,
-  userData
+  userData,
+  ...props
 }) => {
   return(
     <SettingsTemp>
       <div>
         {userData && userData.characters &&
-          <ul>
+          <ul className={styles.characterList}>
             {Object.keys(userData.characters).map(key => {
               const char = userData.characters[key]
               return (
-                <li key={char.id}>
+                <li
+                  key={char.id}
+                  className={styles.characterEntry}
+                >
                   <Character
                     avatar={char.avatar}
                     id={char.id}
                     name={char.name}
                     server={char.server}
                   />
-
+                  <span>
+                    {char.added.toDate().toUTCString()}
+                  </span>
+                  <Button handleClick={() => props.removeCharacter(char.id)}>
+                    Delete character
+                  </Button>
                 </li>
               )
             })}
@@ -44,6 +58,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
+  removeCharacter: bindActionCreators(removeCharacter, dispatch),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings)
