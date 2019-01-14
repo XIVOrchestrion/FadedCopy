@@ -5,12 +5,15 @@ import styles from './Character.module.scss'
 
 const Character = ({
   avatar,
+  classes,
   id,
   name,
   server,
 }) => {
   return (
-    <div className={styles.root}>
+    <div
+      className={[styles.root, classes].join(' ')}
+    >
       <img
         src={avatar}
         className={styles.image}

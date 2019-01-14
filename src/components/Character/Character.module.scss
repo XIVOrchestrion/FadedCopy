@@ -1,3 +1,5 @@
+@import 'styles/variables';
+
 .root {
   display: flex;
   align-items: center;
@@ -11,7 +13,7 @@
 .content {
   // display: flex;
   flex-flow: column nowrap;
-  margin-left: 1rem;
+  margin-left: $spacing-base;
 }
 
 .name,
