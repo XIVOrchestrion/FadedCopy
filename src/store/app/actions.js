@@ -1,9 +1,9 @@
 import * as types from '../constants'
-import { firebaseAuth } from '../../scripts'
+import { firebaseAuth, firebaseStore } from '../../scripts'
 
 export const checkUserData = () => dispatch => {
   firebaseAuth.onAuthStateChanged(user => {
-    if (user)
+    if (user) {
       dispatch({
         type: types.CHECK_USER_DATA,
         user: {
@@ -14,11 +14,18 @@ export const checkUserData = () => dispatch => {
         },
         uid: user.uid,
       })
-    else
+
+      firebaseStore.collection('users').doc(user.uid)
+        .onSnapshot(doc => dispatch({
+          type: types.USER_DATA,
+          userData: doc.data()
+        }))
+    } else {
       dispatch({
         type: types.CHECK_USER_DATA,
         user: null
       })
+    }
   })
 }
 

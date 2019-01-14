@@ -14,6 +14,11 @@ export function appReducer(
         isAuthenticated: action.uid,
       })
 
+    case types.USER_DATA:
+      return Object.assign({}, state, {
+        userData: action.userData,
+      })
+
     case types.USER_REGISTER_SUCCESS:
       return Object.assign({}, state, {
         user: action.user,
