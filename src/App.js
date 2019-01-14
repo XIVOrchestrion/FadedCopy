@@ -3,16 +3,16 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { checkUserData } from '../store/app'
+import { checkUserData } from './store/app'
+import { routes, privateRoutes } from './routes'
+import { Header } from './components'
 
-import { Header } from '../components'
-
-import {
-  Login,
-  Register,
-  Settings,
-  Home,
-} from './pages'
+// import {
+//   Login,
+//   Register,
+//   Settings,
+//   Home,
+// } from './views'
 
 import './App.scss'
 
@@ -55,11 +55,27 @@ class App extends Component {
         <Header location={this.props.location} />
 
         <Switch>
-          <Route exact path={`${process.env.PUBLIC_URL}/`} component={Home} />
+          {routes.map(({path, component}, key) => (
+            <Route
+              key={key}
+              exact
+              path={path}
+              component={component}
+            />
+          ))}
+          {privateRoutes.map(({path, component}, key) => (
+            <PrivateRoute
+              key={key}
+              exact
+              path={path}
+              component={component}
+            />
+          ))}
+          {/* <Route exact path={`${process.env.PUBLIC_URL}/`} component={Home} />
           <Route path={`${process.env.PUBLIC_URL}/login`} component={Login} />
           <Route path={`${process.env.PUBLIC_URL}/register`} component={Register} />
           <PrivateRoute path={`${process.env.PUBLIC_URL}/settings`} component={Settings} />
-          <PrivateRoute path={`${process.env.PUBLIC_URL}/settings/profile`} component={Settings} />
+          <PrivateRoute path={`${process.env.PUBLIC_URL}/settings/profile`} component={Settings} /> */}
         </Switch>
       </div>
     )
