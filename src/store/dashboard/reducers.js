@@ -2,10 +2,12 @@ import * as types from '../constants'
 
 export function dashboardReducer(
   state = {
-    error: false,
+
     isFetching: false,
     lastUpdated: '',
     songs: [],
+    obtained: false,
+    status: false,
   },
   action
 ) {
@@ -26,6 +28,31 @@ export function dashboardReducer(
     case types.DATABASE_RECEIVE_ERROR:
       return Object.assign({}, state, {
         error: action.error
+      })
+
+    case types.FETCH_PROGRESS_SUCCESS:
+      return Object.assign({}, state, {
+        status: action.status,
+        obtained: action.obtained,
+      })
+
+    case types.FETCH_PROGRESS_FAILURE:
+      return Object.assign({}, state, {
+        status: action.status,
+        error: action.error,
+      })
+
+    case types.UPDATE_PROGRESS_REQUEST:
+      return Object.assign({}, state, {
+        status: action.status,
+        obtained: action.obtained,
+      })
+
+    case types.UPDATE_PROGRESS_FAILURE:
+      return Object.assign({}, state, {
+        status: action.status,
+        error: action.error,
+        obtained: action.obtained,
       })
 
     default:

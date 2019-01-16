@@ -25,7 +25,6 @@ export const searchCharacter = (name, world) => dispatch => {
   })
     .then(res => res.json())
     .then(res => {
-      console.log(res)
       if (res.Error)
         throw res.Message
 
@@ -55,13 +54,12 @@ const characterResultsError = (error) => ({
 export const selectCharacter = (character) => (dispatch, getState) => {
   const { app } = getState()
 
-  if (app.userData.characters)
-    if (app.userData.characters[character.ID])
-      return dispatch({
-        type: types.CHARACTER_SELECT_ERROR,
-        searching: false,
-        error: `${character.Name} has already been verified on your account!`
-      })
+  if (app.characters && app.characters[character.ID])
+    return dispatch({
+      type: types.CHARACTER_SELECT_ERROR,
+      searching: false,
+      error: `${character.Name} has already been verified on your account!`
+    })
 
   const dec2hex = (dec) => (`0${dec.toString(16)}`).substr(-2)
 
@@ -93,6 +91,8 @@ export const checkCharacterToken = (token) => (dispatch, getState) => {
   const character = settings.character
   const charID = character.ID
 
+  console.log(character, charID)
+
   fetch(`https://xivapi.com/character/${charID}/verification?key=${xivapiKey}&token=${token}`, {
     method: 'GET',
     mode: 'cors',
@@ -101,7 +101,7 @@ export const checkCharacterToken = (token) => (dispatch, getState) => {
     .then(res => {
       dispatch(characterAuth(res))
       if (res.Pass)
-        dispatch(addCharacterToUser(character, app.user.uid))
+        dispatch(addCharacterToUser(character, app.authenticated))
     })
     .catch(error => dispatch(characterAuthError(error)))
 }
@@ -131,19 +131,14 @@ const addCharacterToUser = (character, uid) => dispatch => {
     name: character.Name,
     server: character.Server,
   }
+  post['activeCharacter'] = character.ID
   post[`characters.${character.ID}`] = data
+
+  console.log(post)
 
   userStore.get()
     .then(doc => {
-      if(doc.exists)
-        userStore.update(post)
-      else
-        userStore.set({
-          characters: {
-            [character.ID]: data
-          },
-          verified: true,
-        })
+      userStore.update(post)
     })
     .then(() => dispatch(characterVerified()))
     .catch(error => {})

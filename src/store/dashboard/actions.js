@@ -1,5 +1,38 @@
 import * as types from '../constants'
-import { firebaseStore } from '../../scripts'
+import { firebaseStore, firebaseStoreValue } from '../../scripts'
+
+
+/**
+ * Check if Orchestrion Rolls should be fetched with `shouldFetchSongs()`
+ * If `true`, make a new request with `requestSongs()`, else fetch data from `localStorage`
+ */
+export const fetchSongsIfNeeded = () => dispatch => {
+  shouldFetchSongs()
+    .then(response => {
+      if(response)
+        return dispatch(requestSongs())
+      else
+        return dispatch(receiveDatabase())
+    })
+}
+
+/**
+ * Fire a request to the Firebase Store to check when the Orchestrion Data was last updated
+ */
+const shouldFetchSongs = async () => {
+  return await firebaseStore.collection('data').doc('lastUpdated').get()
+    .then(doc => doc.data().lastUpdated.toDate())
+    .then(date => date.toUTCString())
+    .then(apiLastUpdate => {
+      const appLastUpdate = localStorage.getItem('lastUpdated')
+      if (apiLastUpdate !== appLastUpdate) {
+        localStorage.setItem('lastUpdated', apiLastUpdate)
+        return true
+      } else {
+        return false
+      }
+    })
+}
 
 /**
  * Fire a request to the Firebase Store to receive the Orchestrion Overview
@@ -40,34 +73,71 @@ const receiveDatabaseError = (error) => {
   }
 }
 
-/**
- * Fire a request to the Firebase Store to check when the Orchestrion Data was last updated
- */
-const shouldFetchSongs = async () => {
-  return await firebaseStore.collection('data').doc('lastUpdated').get()
-    .then(doc => doc.data().lastUpdated.toDate())
-    .then(date => date.toUTCString())
-    .then(apiLastUpdate => {
-      const appLastUpdate = localStorage.getItem('lastUpdated')
-      if (apiLastUpdate !== appLastUpdate) {
-        localStorage.setItem('lastUpdated', apiLastUpdate)
-        return true
-      } else {
-        return false
-      }
+
+export const getProgress = () => (dispatch, getState) => {
+  const { app } = getState()
+  const authenticated = app.authenticated
+  dispatch({ type: types.FETCH_PROGRESS_REQUEST })
+  if (authenticated) {
+    firebaseStore.collection('obtained').doc(authenticated).get()
+      .then(doc => doc.data())
+      .then(res => dispatch(changeProgress(types.FETCH_PROGRESS_SUCCESS, res)))
+      .catch(error => dispatch(changeProgressFailure(error)))
+  } else {
+    dispatch({
+      type: types.FETCH_PROGRESS_SUCCESS,
+      status: 'success',
     })
+  }
 }
 
-/**
- * Check if Orchestrion Rolls should be fetched with `shouldFetchSongs()`
- * If `true`, make a new request with `requestSongs()`, else fetch data from `localStorage`
- */
-export const fetchSongsIfNeeded = () => dispatch => {
-  shouldFetchSongs()
-    .then(response => {
-      if(response)
-        return dispatch(requestSongs())
+const changeProgress = (type, obtained) => ({
+  type,
+  status: 'success',
+  loaded: true,
+  obtained,
+})
+
+const changeProgressFailure = (error) => ({
+  type: types.FETCH_PROGRESS_FAILURE,
+  error: error,
+  status: 'error',
+})
+
+
+export const updateTrack = (id, bool) => (dispatch, getState) => {
+  const { app, dashboard } = getState()
+  const activeCharacter = app.activeCharacter
+  const obtained = dashboard.obtained[activeCharacter] ? dashboard.obtained[activeCharacter].slice(0) : []
+  let newObtained
+
+  if (obtained.includes(id))
+    newObtained = obtained.filter(value => value !== id)
+  else
+    newObtained = obtained.concat([id])
+
+  dispatch(changeProgress(types.UPDATE_PROGRESS_REQUEST, {[activeCharacter]: newObtained}))
+
+  const userStore = firebaseStore.collection('obtained').doc(app.authenticated)
+  userStore.get()
+    .then(doc => {
+      const post = {}
+      if (bool)
+        post[`${activeCharacter}`] = firebaseStoreValue.arrayUnion(id)
       else
-        return dispatch(receiveDatabase())
+        post[`${activeCharacter}`] = firebaseStoreValue.arrayRemove(id)
+
+      userStore.update(post)
+    })
+    .then(() => dispatch({ type: types.UPDATE_PROGRESS_SUCCESS }))
+    .catch(error => {
+      console.log(`Error writing document, ${error}`)
+      console.log(obtained)
+      dispatch({
+        type: types.UPDATE_PROGRESS_FAILURE,
+        error: error,
+        status: 'error',
+        obtained: {[activeCharacter]: obtained},
+      })
     })
 }

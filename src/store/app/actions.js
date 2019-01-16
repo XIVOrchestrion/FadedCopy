@@ -2,58 +2,67 @@ import * as types from '../constants'
 import { firebaseAuth, firebaseStore } from '../../scripts'
 
 export const checkUserData = () => dispatch => {
+  dispatch({ type: types.FETCH_USERDATA_REQUEST })
   firebaseAuth.onAuthStateChanged(user => {
     if (user) {
-      dispatch({
-        type: types.CHECK_USER_DATA,
-        user: {
-          displayName: user.displayName,
-          email: user.email,
-          emailVerified: user.emailVerified,
-          uid: user.uid,
-        },
-        uid: user.uid,
+      const userRef = firebaseStore.collection('users').doc(user.uid)
+      userRef.onSnapshot(doc => {
+        dispatch(loadUserData(user, doc.data()))
+      }, error => {
+        console.log(error)
       })
-
-      firebaseStore.collection('users').doc(user.uid)
-        .onSnapshot(doc => dispatch({
-          type: types.USER_DATA,
-          userData: doc.data()
-        }))
     } else {
-      dispatch({
-        type: types.CHECK_USER_DATA,
-        user: null
-      })
+      dispatch(guestUser())
     }
+  })
+}
+
+const loadUserData = (user, data) => {
+  return ({
+    type: types.FETCH_USERDATA_SUCCESS,
+    activeCharacter: data.activeCharacter,
+    authenticated: user.uid,
+    characters: data.characters,
+    displayName: user.displayName,
+    email: user.email,
+    emailVerified: user.emailVerified,
+    loaded: true,
+  })
+}
+
+const guestUser = () => {
+  return ({
+    type: types.FETCH_USERDATA_SUCCESS,
+    activeCharacter: null,
+    authenticated: false,
+    characters: null,
+    displayName: null,
+    email: null,
+    emailVerified: false,
+    loaded: true,
   })
 }
 
 
 export const userSignUp = (email, password, displayName) => dispatch => {
+  dispatch(userRegisterProcess(types.USER_REGISTER, 'loading'))
   firebaseAuth.createUserWithEmailAndPassword(email, password)
     .then((response) => {
       firebaseAuth.currentUser.updateProfile({ displayName })
-      return response
+      firebaseStore.collection('users').doc(response.user.uid).set({
+        activeCharacter: null,
+        characters: {},
+        obtained: {},
+      })
+      firebaseStore.collection('obtained').doc(response.user.uid).set()
     })
-    .then((response) => dispatch(userSignUpSuccess(response)))
-    .catch(error => dispatch(userSignUpError(error)))
+    .then((response) => dispatch(userRegisterProcess(types.USER_REGISTER_SUCCESS, 'success')))
+    .catch(error => dispatch(userRegisterProcess(types.USER_REGISTER_ERROR, 'error')))
 }
 
-const userSignUpSuccess = (response) => ({
-  type: types.USER_REGISTER_SUCCESS,
-  user: {
-    displayName: response.user.displayName,
-    email: response.user.email,
-    emailVerified: response.user.emailVerified,
-    uid: response.user.uid,
-  },
-  uid: response.user.uid,
-})
-
-const userSignUpError = response => ({
-  type: types.USER_REGISTER_ERROR,
-  userError: response,
+const userRegisterProcess = (type, status) => ({
+  type,
+  status
 })
 
 
@@ -63,28 +72,18 @@ const userSignUpError = response => ({
  * @param {string} password The user's password for sign in
  */
 export const userLogin = (email, password) => dispatch => {
+  dispatch(userLoginProcess(types.USER_LOGIN, 'loading'))
   firebaseAuth.signInWithEmailAndPassword(email, password)
     .then(response => {
-      dispatch(userLoginSuccess(response))
+      dispatch(userLoginProcess(types.USER_LOGIN_SUCCESS, 'success'))
       return Promise.resolve()
     })
-    .catch(error => dispatch(userLoginError(error)))
+    .catch(error => dispatch(userLoginProcess(types.USER_LOGIN_ERROR, 'error')))
 }
 
-const userLoginSuccess = response => ({
-  type: types.USER_LOGIN_SUCCESS,
-  user: {
-    displayName: response.user.displayName,
-    email: response.user.email,
-    emailVerified: response.user.emailVerified,
-    uid: response.user.uid,
-  },
-  uid: response.user.uid,
-})
-
-const userLoginError = response => ({
-  type: types.USER_LOGIN_ERROR,
-  userError: response,
+const userLoginProcess = (type, status) => ({
+  type,
+  status,
 })
 
 
@@ -92,7 +91,11 @@ const userLoginError = response => ({
  *
  * @param {function} cb Updates the router history to push user back to the homepage on successful logout
  */
-export const userLogout = (cb) => dispatch => {
+export const userLogout = (cb) => (dispatch, getState) => {
+  const { app } = getState()
+  const userRef = firebaseStore.collection('users').doc(app.authenticated)
+  userRef.onSnapshot(() => {})
+
   firebaseAuth.signOut()
     .then(() => {
       cb()
