@@ -188,10 +188,16 @@ class SettingsAddCharacter extends React.Component {
 
 SettingsAddCharacter.propTypes = {
   character: PropTypes.object,
+  /**
+   * If `true`, show the Search results
+   */
   loaded: PropTypes.bool,
   pagination: PropTypes.object,
   pass: PropTypes.bool,
   results: PropTypes.array,
+  /**
+   * If `true`, a search is awaiting a response
+   */
   searching: PropTypes.bool,
   token: PropTypes.string,
   /**
@@ -200,17 +206,28 @@ SettingsAddCharacter.propTypes = {
   verified: PropTypes.bool,
 }
 
-const mapStateToProps = (state) => ({
-  character: state.settings.character,
-  error: state.settings.error,
-  loaded: state.settings.loaded,
-  pagination: state.settings.pagination,
-  pass: state.settings.pass,
-  results: state.settings.results,
-  searching: state.settings.searching,
-  token: state.settings.token,
-  verified: state.settings.verified,
-})
+const mapStateToProps = (state) => {
+  const {
+    character,
+    error,
+    loaded,
+    pagination,
+    results,
+    searching,
+  } = state.settings
+
+  return {
+    character,
+    error,
+    loaded,
+    pagination,
+    pass: state.settings.pass,
+    results,
+    searching,
+    token: state.settings.token,
+    verified: state.settings.verified,
+  }
+}
 
 const mapDispatchToProps = (dispatch) => ({
   checkCharacterToken: bindActionCreators(checkCharacterToken, dispatch),

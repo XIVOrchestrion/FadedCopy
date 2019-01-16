@@ -11,6 +11,7 @@ import { Button, Character } from '../../components'
 import styles from './Settings.module.scss'
 
 const Settings = ({
+  characters,
   user,
   userData,
   ...props
@@ -29,10 +30,10 @@ const Settings = ({
           Add Character
         </Button>
 
-        {userData && userData.characters &&
+        {characters &&
           <ul className={styles.characterList}>
-            {Object.keys(userData.characters).map(key => {
-              const char = userData.characters[key]
+            {Object.keys(characters).map(key => {
+              const char = characters[key]
               return (
                 <li
                   key={char.id}
@@ -66,6 +67,7 @@ const Settings = ({
 }
 
 const mapStateToProps = (state) => ({
+  characters: state.app.characters,
   user: state.app.user,
   userData: state.app.userData,
 })
