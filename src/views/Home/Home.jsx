@@ -10,7 +10,7 @@ class Home extends React.Component {
     return(
       <React.Fragment>
         <div>
-          {this.props.isAuthenticated ? (
+          {this.props.authenticated ? (
             <Redirect to="/rolls" />
           ) : (
             <main>
@@ -24,7 +24,7 @@ class Home extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  isAuthenticated: state.app.isAuthenticated,
+  authenticated: state.app.authenticated,
 })
 
 const mapDispatchToProps = (dispatch) => ({

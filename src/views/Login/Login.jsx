@@ -12,12 +12,12 @@ class Login extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.user)
+    if (this.props.authenticated)
       this.setState({ redirectToReferrer: true })
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.user !== prevProps.user && this.props.user !== null)
+    if (this.props.authenticated !== prevProps.authenticated && this.props.authenticated)
       this.setState({ redirectToReferrer: true })
   }
 
@@ -60,6 +60,7 @@ class Login extends React.Component {
 
           <button
             type="submit"
+            disabled={this.props.status ? this.props.status === 'loading' || this.props.status === 'success' : false}
           >
             Submit
           </button>
@@ -75,7 +76,8 @@ Login.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.app.user,
+  authenticated: state.app.authenticated,
+  status: state.app.status,
 })
 
 const mapDispatchToProps = (dispatch) => ({

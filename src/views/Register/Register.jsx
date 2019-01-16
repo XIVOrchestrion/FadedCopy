@@ -12,12 +12,12 @@ class Login extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.user)
+    if (this.props.authenticated)
       this.setState({ redirectToReferrer: true })
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.user !== prevProps.user && this.props.user !== null)
+    if (this.props.authenticated !== prevProps.authenticated && this.props.authenticated)
       this.setState({ redirectToReferrer: true })
   }
 
@@ -87,7 +87,7 @@ Login.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.app.user,
+  authenticated: state.app.authenticated,
 })
 
 const mapDispatchToProps = (dispatch) => ({
