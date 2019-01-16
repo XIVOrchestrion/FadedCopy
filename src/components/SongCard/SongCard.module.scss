@@ -2,7 +2,8 @@
 
 .root {
   display: flex;
-  padding: $spacing-small 0;
+  align-items: center;
+  padding: $spacing-base 0;
   border-bottom: 1px solid #e4e4e4;
 
   &:first-of-type {
@@ -17,7 +18,8 @@
 }
 
 .name {
-  flex: 1 1 36rem;
+  flex: 1 1 auto;
+  width: 36rem;
   margin-right: $spacing-base;
   overflow: hidden;
   white-space: nowrap;

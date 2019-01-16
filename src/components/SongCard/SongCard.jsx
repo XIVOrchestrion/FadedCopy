@@ -4,7 +4,9 @@ import PropTypes from 'prop-types'
 import styles from './SongCard.module.scss'
 
 const SongCard = ({
+  checked,
   desc,
+  handleChange,
   id,
   name,
   tracking,
@@ -16,7 +18,12 @@ const SongCard = ({
   return(
     <div className={styles.root}>
       {tracking &&
-        <input type="checkbox" />
+        <input
+          id={id}
+          checked={checked}
+          type="checkbox"
+          onChange={handleChange}
+        />
       }
       <div className={styles.number}>
         { uiId }.
@@ -32,6 +39,7 @@ const SongCard = ({
 }
 
 SongCard.propTypes = {
+  checked: PropTypes.bool,
   desc: PropTypes.object,
   id: PropTypes.number,
   name: PropTypes.object,
@@ -45,6 +53,7 @@ SongCard.propTypes = {
 }
 
 SongCard.defaultProps = {
+  checked: false,
   tracking: false,
 }
 
