@@ -9,6 +9,7 @@ const SongCard = ({
   handleChange,
   id,
   name,
+  order,
   tracking,
   uiCat,
   uiId,
@@ -26,7 +27,7 @@ const SongCard = ({
         />
       }
       <div className={styles.number}>
-        { uiId }.
+        { order === 65535 ? '-' : `${order}.` }
       </div>
       <div className={styles.name}>
         { name.en }
@@ -43,6 +44,7 @@ SongCard.propTypes = {
   desc: PropTypes.object,
   id: PropTypes.number,
   name: PropTypes.object,
+  order: PropTypes.number,
   /**
    * If `true`, enables tracking and logging functionality
    */
