@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
@@ -19,28 +19,63 @@ class Header extends React.Component {
   render() {
     const {
       location,
-      user,
+      authenticated,
     } = this.props
 
     return (
       <header className={styles.root}>
-        <Link to="/">
-          { user ? 'Tracking' : 'Home' }
-        </Link>
+        <nav className={styles.nav}>
+          {!authenticated &&
+            <NavLink
+              exact
+              to="/"
+              className={styles.link}
+              activeClassName={styles.selected}
+            >
+              Home
+            </NavLink>
+          }
 
-        {user ? (
-          <span>
-            <Link to="/settings/profile">Settings</Link>
-            <button onClick={this.handleLogout}>
-              Log out
-            </button>
-          </span>
-        ) : (
-          <span>
-            <Link to={{ pathname: '/register', state: { from: location } }}>Register</Link>
-            <Link to={{ pathname: '/login', state: { from: location } }}>Log in</Link>
-          </span>
-        )}
+          <NavLink
+            to="/rolls"
+            className={styles.link}
+            activeClassName={styles.selected}
+          >
+            Rolls
+          </NavLink>
+
+          {authenticated ? (
+            <React.Fragment>
+              <NavLink
+                to="/settings/profile"
+                className={styles.link}
+                activeClassName={styles.selected}
+              >
+                Settings
+              </NavLink>
+              <button onClick={this.handleLogout}>
+                Log out
+              </button>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <NavLink
+                to={{ pathname: '/register', state: { from: location } }}
+                className={styles.link}
+                activeClassName={styles.selected}
+              >
+                Register
+              </NavLink>
+              <NavLink
+                to={{ pathname: '/login', state: { from: location } }}
+                className={styles.link}
+                activeClassName={styles.selected}
+              >
+                Log in
+              </NavLink>
+            </React.Fragment>
+          )}
+        </nav>
       </header>
     )
   }
@@ -48,11 +83,11 @@ class Header extends React.Component {
 
 Header.propTypes = {
   location: PropTypes.object,
-  user: PropTypes.object,
+  authenticated: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 }
 
 const mapStateToProps = (state) => ({
-  user: state.app.user,
+  authenticated: state.app.authenticated,
 })
 
 const mapDispatchToProps = (dispatch) => ({

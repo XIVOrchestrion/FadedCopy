@@ -1,3 +1,24 @@
+@import 'styles/variables';
+
 .root {
   border-bottom: 1px solid grey;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  flex-flow: row nowrap;
+}
+
+.link {
+  display: block;
+  padding: $spacing-base $spacing-base $spacing-small;
+  color: #2b2b2b;
+  text-decoration: none;
+  border-bottom: 4px solid transparent;
+  box-sizing: border-box;
+}
+
+.selected {
+  border-color: black;
 }
