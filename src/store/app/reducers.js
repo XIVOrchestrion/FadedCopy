@@ -41,6 +41,7 @@ export function appReducer(
     case types.USER_REGISTER_ERROR:
       return Object.assign({}, state, {
         status: action.status,
+        error: action.error,
       })
 
     case types.USER_LOGIN:
@@ -56,6 +57,7 @@ export function appReducer(
     case types.USER_LOGIN_ERROR:
       return Object.assign({}, state, {
         status: action.status,
+        error: action.error,
       })
 
     case types.USER_LOGOUT_SUCCESS:

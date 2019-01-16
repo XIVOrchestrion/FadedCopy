@@ -57,12 +57,13 @@ export const userSignUp = (email, password, displayName) => dispatch => {
       firebaseStore.collection('obtained').doc(response.user.uid).set()
     })
     .then((response) => dispatch(userRegisterProcess(types.USER_REGISTER_SUCCESS, 'success')))
-    .catch(error => dispatch(userRegisterProcess(types.USER_REGISTER_ERROR, 'error')))
+    .catch(error => dispatch(userRegisterProcess(types.USER_REGISTER_ERROR, 'error', error)))
 }
 
-const userRegisterProcess = (type, status) => ({
+const userRegisterProcess = (type, status, error) => ({
   type,
-  status
+  status,
+  error
 })
 
 
@@ -78,12 +79,13 @@ export const userLogin = (email, password) => dispatch => {
       dispatch(userLoginProcess(types.USER_LOGIN_SUCCESS, 'success'))
       return Promise.resolve()
     })
-    .catch(error => dispatch(userLoginProcess(types.USER_LOGIN_ERROR, 'error')))
+    .catch(error => dispatch(userLoginProcess(types.USER_LOGIN_ERROR, 'error', error)))
 }
 
-const userLoginProcess = (type, status) => ({
+const userLoginProcess = (type, status, error) => ({
   type,
   status,
+  error,
 })
 
 

@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import { userSignUp } from '../../store/app'
+import { Alert } from '../../components'
 
 class Login extends React.Component {
   state = {
@@ -31,6 +32,10 @@ class Login extends React.Component {
   }
 
   render() {
+    const {
+      error
+    } = this.props
+
     let { from } = { from: { pathname: "/settings/profile/new" } }
     let { redirectToReferrer } = this.state
 
@@ -38,6 +43,12 @@ class Login extends React.Component {
 
     return(
       <main>
+        {error &&
+          <Alert type="error">
+            { error.message }
+          </Alert>
+        }
+
         <form onSubmit={this.handleSubmit}>
           <label>
             Display Name
@@ -88,6 +99,7 @@ Login.propTypes = {
 
 const mapStateToProps = (state) => ({
   authenticated: state.app.authenticated,
+  error: state.app.error,
 })
 
 const mapDispatchToProps = (dispatch) => ({

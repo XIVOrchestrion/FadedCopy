@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import { userLogin } from '../../store/app'
+import { Alert } from '../../components'
 
 class Login extends React.Component {
   state = {
@@ -30,13 +31,29 @@ class Login extends React.Component {
   }
 
   render() {
+    const {
+      error,
+      status,
+    } = this.props
+
     let { from } = this.props.location.state || { from: { pathname: "/settings" } }
     let { redirectToReferrer } = this.state
 
     if (redirectToReferrer) return <Redirect to={from} />
 
+    const errorMessages = {
+      'auth/user-not-found': 'There is no user registered with this email address',
+      'auth/wrong-password': 'The password entered is invalid',
+    }
+
     return(
       <main>
+        {error &&
+          <Alert type="error">
+            { errorMessages[error.code] }
+          </Alert>
+        }
+
         <form onSubmit={this.handleSubmit}>
           <label>
             Email
@@ -60,7 +77,7 @@ class Login extends React.Component {
 
           <button
             type="submit"
-            disabled={this.props.status ? this.props.status === 'loading' || this.props.status === 'success' : false}
+            disabled={status ? status === 'loading' || status === 'success' : false}
           >
             Submit
           </button>
@@ -77,6 +94,7 @@ Login.propTypes = {
 
 const mapStateToProps = (state) => ({
   authenticated: state.app.authenticated,
+  error: state.app.error,
   status: state.app.status,
 })
 
