@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 
 import { version } from '../package.json'
 import { checkUserData } from './store/app'
+import { fetchSongsIfNeeded } from './store/dashboard'
 import { routes, privateRoutes } from './routes'
 import { Header, Alert } from './components'
 import styles from './App.module.scss'
@@ -12,10 +13,11 @@ import styles from './App.module.scss'
 class App extends React.Component {
   componentDidMount() {
     this.props.checkUserData()
+    this.props.fetchSongsIfNeeded()
   }
 
   privateRoute = ({ component: Component, ...rest }) => {
-    const auth = this.props.user
+    const auth = this.props.authenticated
     return (
       <Route
         {...rest}
@@ -30,15 +32,18 @@ class App extends React.Component {
 
   render() {
     const {
-      user
+      user,
+      userData,
+
+      loaded,
     } = this.props
 
     const PrivateRoute = this.privateRoute
 
-    if (user === false) {
+    if (!loaded) {
       return (
         <div className="App">
-
+          LOADING, YO
         </div>
       )
     }
@@ -90,16 +95,26 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { isAuthenticated, user } = state.app
+  const { isAuthenticated, user, userData } = state.app
 
   return {
     isAuthenticated,
     user,
+    userData,
+
+    activeCharacter: state.app.activeCharacter,
+    authenticated: state.app.authenticated,
+    characters: state.app.characters,
+    displayName: state.app.displayName,
+    email: state.app.email,
+    emailVerified: state.app.emailVerified,
+    loaded: state.app.loaded,
   }
 }
 
 const mapDispatchToProps = dispatch => ({
   checkUserData: bindActionCreators(checkUserData, dispatch),
+  fetchSongsIfNeeded: bindActionCreators(fetchSongsIfNeeded, dispatch),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
