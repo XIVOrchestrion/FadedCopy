@@ -49,6 +49,7 @@ const requestSongs = () => dispatch => {
       localStorage.setItem('songs', JSON.stringify(res))
       dispatch(receiveDatabase())
     })
+    .then(() => dispatch(sortSongs('uiCat')))
     .catch(err => dispatch(receiveDatabaseError(err)))
 }
 
@@ -71,6 +72,37 @@ const receiveDatabaseError = (error) => {
     type: types.DATABASE_RECEIVE_ERROR,
     error,
   }
+}
+
+
+export const sortSongs = (sort) => (dispatch, getState) => {
+  const { dashboard } = getState()
+  const songs = dashboard.songs.slice(0)
+
+  const groupBy = (list, keyGetter) => {
+    const map = new Map()
+    list.forEach(item => {
+      const key = keyGetter(item)
+      const collection = map.get(key)
+      if (!collection)
+        map.set(key, [item])
+      else
+        collection.push(item)
+    })
+    return map
+  }
+
+  songs.sort((a, b) => {
+    if (a[sort] === b[sort])
+      return a.uiOrder - b.uiOrder
+    return a[sort] > b[sort] ? 1 : -1
+  })
+
+  const grouped = groupBy(songs, song => song[sort])
+
+  dispatch({ type: types.ARRANGE_DATA_PROCESS, songs: grouped })
+
+
 }
 
 

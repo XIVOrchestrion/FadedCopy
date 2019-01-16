@@ -2,11 +2,11 @@ import * as types from '../constants'
 
 export function dashboardReducer(
   state = {
-
+    displaySongs: [],
     isFetching: false,
     lastUpdated: '',
     songs: [],
-    obtained: false,
+    obtained: [],
     status: false,
   },
   action
@@ -15,7 +15,6 @@ export function dashboardReducer(
     case types.DATABASE_REQUEST:
       return Object.assign({}, state, {
         isFetching: true,
-        songs: action.songs,
       })
 
     case types.DATABASE_RECEIVE:
@@ -53,6 +52,11 @@ export function dashboardReducer(
         status: action.status,
         error: action.error,
         obtained: action.obtained,
+      })
+
+    case types.ARRANGE_DATA_PROCESS:
+      return Object.assign({}, state, {
+        displaySongs: action.songs,
       })
 
     default:

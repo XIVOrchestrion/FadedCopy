@@ -3,12 +3,19 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import { getProgress, updateTrack } from '../../store/dashboard'
-
+import { categories } from '../../data'
 import { SongCard, Alert } from '../../components'
+import styles from './Rolls.module.scss'
 
 class Rolls extends React.Component {
   componentDidMount() {
     this.props.getProgress()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.songs !== prevProps.songs){
+      console.log('firing?')
+    }
   }
 
   handleChange = (e) => {
@@ -20,6 +27,7 @@ class Rolls extends React.Component {
     const {
       activeCharacter,
       authenticated,
+      displaySongs,
       status,
       obtained,
       songs,
@@ -46,7 +54,35 @@ class Rolls extends React.Component {
           </Alert>
         }
 
-        {songs.map(item => {
+        {Array.from(displaySongs).map(([key, value]) => (
+          <section key={key}>
+            <h2 className={styles.sectionTitle}>
+              {categories[key].en}
+            </h2>
+            {value.map(item => {
+              let extraProps = {}
+              if (activeCharacter) {
+                const isChecked = obtained[activeCharacter] ? obtained[activeCharacter].includes(item.id.toString()) : false
+                extraProps = {
+                  checked: isChecked,
+                  handleChange: this.handleChange,
+                  tracking: true,
+                }
+              }
+
+              return (
+                <SongCard
+                  key={item.id}
+                  {...item}
+                  order={item.uiOrder}
+                  {...extraProps}
+                />
+              )
+            })}
+          </section>
+        ))}
+
+        {/*displaySongs.map(item => {
           let extraProps = {}
           if (activeCharacter) {
             const isChecked = obtained[activeCharacter] ? obtained[activeCharacter].includes(item.id.toString()) : false
@@ -61,10 +97,11 @@ class Rolls extends React.Component {
             <SongCard
               key={item.id}
               {...item}
+              order={item.uiOrder}
               {...extraProps}
             />
           )
-        })}
+        })*/}
       </main>
     )
   }
@@ -78,6 +115,7 @@ const mapStateToProps = (state) => {
   } = state.app
 
   const {
+    displaySongs,
     isFetching,
     lastUpdated,
     songs,
@@ -88,6 +126,7 @@ const mapStateToProps = (state) => {
   return {
     activeCharacter,
     authenticated,
+    displaySongs,
     error,
     isFetching,
     lastUpdated,

@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 
 import { version } from '../package.json'
 import { checkUserData } from './store/app'
-import { fetchSongsIfNeeded } from './store/dashboard'
+import { fetchSongsIfNeeded, sortSongs } from './store/dashboard'
 import { routes, privateRoutes } from './routes'
 import { Header, Alert } from './components'
 import styles from './App.module.scss'
@@ -14,6 +14,11 @@ class App extends React.Component {
   componentDidMount() {
     this.props.checkUserData()
     this.props.fetchSongsIfNeeded()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.songs !== prevProps.songs)
+      this.props.sortSongs('uiCat')
   }
 
   privateRoute = ({ component: Component, ...rest }) => {
@@ -109,12 +114,14 @@ const mapStateToProps = state => {
     email: state.app.email,
     emailVerified: state.app.emailVerified,
     loaded: state.app.loaded,
+    songs: state.dashboard.songs,
   }
 }
 
 const mapDispatchToProps = dispatch => ({
   checkUserData: bindActionCreators(checkUserData, dispatch),
   fetchSongsIfNeeded: bindActionCreators(fetchSongsIfNeeded, dispatch),
+  sortSongs: bindActionCreators(sortSongs, dispatch),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

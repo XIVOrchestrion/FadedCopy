@@ -1,0 +1,9 @@
+@import 'styles/variables';
+
+.sectionTitle {
+  margin-top: $spacing-large;
+  margin-bottom: $spacing-base;
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
