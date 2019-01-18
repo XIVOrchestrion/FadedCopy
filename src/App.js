@@ -18,7 +18,7 @@ class App extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.songs !== prevProps.songs)
-      this.props.sortSongs('uiCat')
+      this.props.sortSongs('uiCat', 'uiOrder')
   }
 
   privateRoute = ({ component: Component, ...rest }) => {
@@ -37,9 +37,6 @@ class App extends React.Component {
 
   render() {
     const {
-      user,
-      userData,
-
       loaded,
     } = this.props
 
@@ -100,13 +97,7 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { isAuthenticated, user, userData } = state.app
-
   return {
-    isAuthenticated,
-    user,
-    userData,
-
     activeCharacter: state.app.activeCharacter,
     authenticated: state.app.authenticated,
     characters: state.app.characters,
