@@ -1,7 +1,18 @@
 @import 'styles/variables';
 
 .root {
-  border-bottom: 1px solid grey;
+  padding: 0 $spacing-large;
+  background-color: #4a4b53;
+}
+
+.logo {
+  margin-right: $spacing-large;
+  padding: $spacing-small 0;
+}
+
+.logoLink {
+  color: #ffffff;
+  cursor: pointer;
 }
 
 .nav {
@@ -12,13 +23,24 @@
 
 .link {
   display: block;
-  padding: $spacing-base $spacing-base $spacing-small;
-  color: #2b2b2b;
+  height: 100%;
+  padding: $spacing-base $spacing-base;
+  color: #d4d4d4;
   text-decoration: none;
+  border-top: 4px solid transparent;
   border-bottom: 4px solid transparent;
   box-sizing: border-box;
+  transition: color .2s ease-out;
+
+  &:hover {
+    color: #fff;
+  }
+
+  &:focus {
+    outline: 0;
+  }
 }
 
 .selected {
-  border-color: black;
+  border-bottom-color: #3372cf;
 }

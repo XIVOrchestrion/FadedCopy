@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import { userLogout } from '../../store/app'
+import { Icon } from '../'
 import styles from './Header.module.scss'
 
 class Header extends React.Component {
@@ -25,16 +26,15 @@ class Header extends React.Component {
     return (
       <header className={styles.root}>
         <nav className={styles.nav}>
-          {!authenticated &&
+          <div className={styles.logo}>
             <NavLink
               exact
               to="/"
-              className={styles.link}
-              activeClassName={styles.selected}
+              className={styles.logoLink}
             >
-              Home
+              <Icon icon="fadedCopyLogo" />
             </NavLink>
-          }
+          </div>
 
           <NavLink
             to="/rolls"

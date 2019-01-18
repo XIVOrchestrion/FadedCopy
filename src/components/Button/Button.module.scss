@@ -1,12 +1,15 @@
+@import 'styles/variables';
+
 .root {
   display: inline-block;
-  padding: 0.5rem;
-  background-color: #eee;
-  color: black;
-  font-weight: 600;
-  font-size: .75rem;
+  padding: $spacing-base;
+  background-color: #3372cf;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 1rem;
   text-decoration: none;
-  border: 1px solid black;
+  border: 0;
+  border-radius: 4px;
   box-sizing: border-box;
   cursor: pointer;
 
