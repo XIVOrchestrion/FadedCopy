@@ -47,12 +47,11 @@ const Settings = ({
                     server={char.server}
                   />
                   <span className={styles.characterField}>
-                    {char.added.toDate().toUTCString()}
+                    {char.added ? char.added.toDate().toUTCString() : ''}
                   </span>
                   <Button
                     classes={styles.characterField}
                     handleClick={() => props.removeCharacter(char.id)}
-                    disabled
                   >
                     Delete character
                   </Button>

@@ -12,16 +12,7 @@ class Rolls extends React.Component {
     this.props.getProgress()
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.songs !== prevProps.songs){
-      console.log('firing?')
-    }
-  }
-
-  handleChange = (e) => {
-    console.log(e.target, e.target.checked)
-    this.props.updateTrack(e.target.id, e.target.checked)
-  }
+  handleChange = (e) => this.props.updateTrack(e.target.id, e.target.checked)
 
   render() {
     const {
@@ -30,7 +21,6 @@ class Rolls extends React.Component {
       displaySongs,
       status,
       obtained,
-      songs,
     } = this.props
 
     if (!status)
@@ -81,27 +71,6 @@ class Rolls extends React.Component {
             })}
           </section>
         ))}
-
-        {/*displaySongs.map(item => {
-          let extraProps = {}
-          if (activeCharacter) {
-            const isChecked = obtained[activeCharacter] ? obtained[activeCharacter].includes(item.id.toString()) : false
-            extraProps = {
-              checked: isChecked,
-              handleChange: this.handleChange,
-              tracking: true,
-            }
-          }
-
-          return (
-            <SongCard
-              key={item.id}
-              {...item}
-              order={item.uiOrder}
-              {...extraProps}
-            />
-          )
-        })*/}
       </main>
     )
   }
@@ -118,7 +87,6 @@ const mapStateToProps = (state) => {
     displaySongs,
     isFetching,
     lastUpdated,
-    songs,
     status,
     obtained
   } = state.dashboard
@@ -130,7 +98,6 @@ const mapStateToProps = (state) => {
     error,
     isFetching,
     lastUpdated,
-    songs,
     status,
     obtained,
   }
