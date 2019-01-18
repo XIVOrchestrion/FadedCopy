@@ -2,7 +2,7 @@ import * as types from '../constants'
 
 export function dashboardReducer(
   state = {
-    displaySongs: [],
+    displaySongs: {},
     isFetching: false,
     lastUpdated: '',
     songs: [],
@@ -56,7 +56,7 @@ export function dashboardReducer(
 
     case types.ARRANGE_DATA_PROCESS:
       return Object.assign({}, state, {
-        displaySongs: action.songs,
+        displaySongs: action.displaySongs,
       })
 
     default:

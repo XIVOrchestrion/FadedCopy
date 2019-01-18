@@ -75,7 +75,7 @@ const receiveDatabaseError = (error) => {
 }
 
 
-export const sortSongs = (sort) => (dispatch, getState) => {
+export const sortSongs = (sort, fallbackSort) => (dispatch, getState) => {
   const { dashboard } = getState()
   const songs = dashboard.songs.slice(0)
 
@@ -94,15 +94,16 @@ export const sortSongs = (sort) => (dispatch, getState) => {
 
   songs.sort((a, b) => {
     if (a[sort] === b[sort])
-      return a.uiOrder - b.uiOrder
+      return a[fallbackSort] - b[fallbackSort]
     return a[sort] > b[sort] ? 1 : -1
   })
 
   const grouped = groupBy(songs, song => song[sort])
 
-  dispatch({ type: types.ARRANGE_DATA_PROCESS, songs: grouped })
-
-
+  dispatch({
+    type: types.ARRANGE_DATA_PROCESS,
+    displaySongs: grouped
+  })
 }
 
 
