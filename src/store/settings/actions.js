@@ -3,10 +3,6 @@ import xivapiKey from '../../scripts/secret/xivapiKey'
 import { firebaseStore, firebaseStoreValue } from '../../scripts'
 
 
-export const removeCharacter = (id) => dispatch => {
-  console.log("This would normally delete the character")
-}
-
 /**
  *
  * @param {string} name Character Name to search for
@@ -136,10 +132,10 @@ const addCharacterToUser = (character, uid) => dispatch => {
 
   console.log(post)
 
+  firebaseStore.collection('obtained').doc(uid).update({ [`${character.ID}`]: [] })
+
   userStore.get()
-    .then(doc => {
-      userStore.update(post)
-    })
+    .then(doc => userStore.update(post))
     .then(() => dispatch(characterVerified()))
     .catch(error => {})
 }
@@ -148,3 +144,29 @@ const characterVerified = () => ({
   type: types.CHARACTER_VERIFIED,
   verified: true,
 })
+
+
+export const removeCharacter = (id) => (dispatch, getState) => {
+  const { app } = getState()
+  const uid = app.authenticated
+  const characterList = Object.keys(app.characters)
+
+  /**
+   * If there is only one character, remove it and set the active Characters value to empty
+   */
+  if (characterList.length === 1) {
+    const batch = firebaseStore.batch()
+    const userRef = firebaseStore.collection('users').doc(uid)
+    const obtainedRef = firebaseStore.collection('obtained').doc(uid)
+
+    batch.update(userRef, {
+      [`characters.${id}`]: firebaseStoreValue.delete(),
+      'activeCharacter': null
+    })
+    batch.update(obtainedRef, {[`${id}`]: firebaseStoreValue.delete() })
+    batch.commit()
+      .then(() => console.log('Batch sent successfully'))
+      .catch(error => console.log(error))
+  }
+
+}
