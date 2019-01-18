@@ -48,16 +48,23 @@ export const userSignUp = (email, password, displayName) => dispatch => {
   dispatch(userRegisterProcess(types.USER_REGISTER, 'loading'))
   firebaseAuth.createUserWithEmailAndPassword(email, password)
     .then((response) => {
-      firebaseAuth.currentUser.updateProfile({ displayName })
-      firebaseStore.collection('users').doc(response.user.uid).set({
+      const batch = firebaseStore.batch()
+      const userDoc = firebaseStore.collection('users').doc(response.user.uid)
+      const obtainedDoc = firebaseStore.collection('obtained').doc(response.user.uid)
+      const userData = {
         activeCharacter: null,
         characters: {},
         obtained: {},
-      })
-      firebaseStore.collection('obtained').doc(response.user.uid).set()
+      }
+      batch.set(userDoc, userData)
+      batch.set(obtainedDoc, {})
+      batch.commit()
     })
-    .then((response) => dispatch(userRegisterProcess(types.USER_REGISTER_SUCCESS, 'success')))
-    .catch(error => dispatch(userRegisterProcess(types.USER_REGISTER_ERROR, 'error', error)))
+    .then(() => dispatch(userRegisterProcess(types.USER_REGISTER_SUCCESS, 'success')))
+    .catch(error => {
+      console.log(error)
+      dispatch(userRegisterProcess(types.USER_REGISTER_ERROR, 'error', error))
+  })
 }
 
 const userRegisterProcess = (type, status, error) => ({
