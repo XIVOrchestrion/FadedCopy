@@ -14,7 +14,7 @@ const Button = ({
 }) => {
   return Tag === "link" ? (
     <Link
-      className={styles.root}
+      className={[styles.root, classes].join(' ')}
       to={to}
       disabled={disabled}
     >
