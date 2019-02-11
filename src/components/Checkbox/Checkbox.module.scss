@@ -1,0 +1,52 @@
+@import 'styles/variables';
+
+$transitionTime: .1s;
+$transitionEase: ease;
+
+.root {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+.checkbox {
+  position: relative;
+  display: flex;
+  align-items: inherit;
+  order: -1;
+  padding: 12px;
+  background-color: transparent;
+  border: 2px solid $slate;
+  border-radius: 2px;
+  box-sizing: border-box;
+  transition: background-color $transitionTime $transitionEase,
+              border-color $transitionTime $transitionEase;
+  cursor: pointer;
+}
+
+.checked {
+  padding: 4px;
+  background-color: $brandPrimary;
+  border-color: $brandPrimary;
+}
+
+.disabled {
+  border-color: $keyline;
+}
+
+.icon {
+  width: 16px;
+  color: $white;
+}
+
+.input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  cursor: inherit;
+}
