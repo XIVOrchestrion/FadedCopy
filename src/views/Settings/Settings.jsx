@@ -26,7 +26,11 @@ const Settings = ({
           My characters
         </h3>
 
-        <Button tag="link" to="/settings/profile/new">
+        <Button
+          tag="link"
+          to="/settings/profile/new"
+          classes={styles.addCharacter}
+        >
           Add Character
         </Button>
 
@@ -34,6 +38,14 @@ const Settings = ({
           <ul className={styles.characterList}>
             {Object.keys(characters).map(key => {
               const char = characters[key]
+              const date = char.added
+                ? new Intl.DateTimeFormat('en-GB', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'}
+                  ).format(char.added.toDate())
+                : ''
+
               return (
                 <li
                   key={char.id}
@@ -47,7 +59,7 @@ const Settings = ({
                     server={char.server}
                   />
                   <span className={styles.characterField}>
-                    {char.added ? char.added.toDate().toUTCString() : ''}
+                    Added on { date }
                   </span>
                   <Button
                     classes={styles.characterField}

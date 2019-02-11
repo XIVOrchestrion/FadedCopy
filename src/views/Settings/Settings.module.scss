@@ -1,21 +1,32 @@
 @import 'styles/variables';
 
+
+.addCharacter {
+  margin-left: auto;
+}
+
 .characterList {
   display: block;
   margin: $spacing-base 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-sizing: border-box;
+
 }
 
 .characterEntry {
   display: flex;
   align-items: center;
   flex-flow: row nowrap;
+  justify-content: space-between;
   margin-bottom: $spacing-small;
-  padding-bottom: $spacing-small;
+  padding: $spacing-base;
   border-bottom: 1px solid black;
+
 
   &:last-of-type {
     margin-bottom: 0;
-    padding-bottom: 0;
     border-bottom: 0;
   }
 }
