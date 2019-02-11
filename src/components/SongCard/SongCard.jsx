@@ -1,7 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 
 import styles from './SongCard.module.scss'
+
+import { Checkbox } from '../'
 
 const SongCard = ({
   checked,
@@ -17,13 +20,20 @@ const SongCard = ({
 }) => {
 
   return(
-    <div className={styles.root}>
+    <div
+      className={
+        classNames(styles.root, {
+          [styles.row]: true,
+          [styles.obtained]: checked,
+        }
+      )}
+    >
       {tracking &&
-        <input
+        <Checkbox
           id={id}
           checked={checked}
           type="checkbox"
-          onChange={handleChange}
+          handleChange={handleChange}
         />
       }
       <div className={styles.number}>
@@ -40,9 +50,21 @@ const SongCard = ({
 }
 
 SongCard.propTypes = {
+  /**
+   * If `true`, the song is marked as obtained.
+   */
   checked: PropTypes.bool,
+  /**
+   * Short summary of how to obtain the song.
+   */
   desc: PropTypes.object,
+  /**
+   * Unique id for the song.
+   */
   id: PropTypes.number,
+  /**
+   * Song name.
+   */
   name: PropTypes.object,
   order: PropTypes.number,
   /**

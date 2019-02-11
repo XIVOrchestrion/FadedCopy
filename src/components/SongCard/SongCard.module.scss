@@ -4,15 +4,26 @@
   display: flex;
   align-items: center;
   padding: $spacing-base $spacing-small;
-  border-bottom: 1px solid #e4e4e4;
+  // border-bottom: 1px solid #e4e4e4;
 
-  &:first-of-type {
-    border-top: 1px solid #e4e4e4;
-  }
+  // &:first-of-type {
+  //   border-top: 1px solid #e4e4e4;
+  // }
 
   &:hover,
   &:focus-within {
     background-color: #d6dbe6;
+  }
+
+}
+
+.row {
+  background-color: white;
+  border-radius: 4px;
+  margin-bottom: 4px;
+
+  &:last-of-type {
+    margin-bottom: 0;
   }
 }
 
@@ -23,20 +34,42 @@
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
   font-size: .75rem;
   text-align: right;
+
+  .obtained & {
+    opacity: .4;
+  }
 }
 
 .name {
   flex: 1 1 auto;
   width: 36rem;
   margin-right: $spacing-base;
-  font-size: 1rem;
-  line-height: 20px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
+  font-weight: 600;
+
+  .row & {
+    font-size: 1rem;
+    line-height: 20px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .obtained & {
+    opacity: .4;
+  }
 }
 
 .desc {
   flex: 0 1 100%;
+  font-family: 'IBM Plex Sans', sans-serif;
+
+  .row & {
+    font-size: .75rem;
+    line-height: 14px;
+  }
+
+  .obtained & {
+    opacity: .4;
+  }
 }
 
