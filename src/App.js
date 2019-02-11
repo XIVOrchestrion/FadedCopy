@@ -83,12 +83,12 @@ class App extends React.Component {
         </Switch>
 
         <footer className={styles.footer}>
-          <div>
-            <span>FINAL FANTASY is a registered trademark of Square Enix Holdings Co., Ltd.</span>
-            <span>FINAL FANTASY XIV © SQUARE ENIX CO., LTD.</span>
+          <div className={styles.footerTm}>
+            FINAL FANTASY is a registered trademark of Square Enix Holdings Co., Ltd.<br />
+            FINAL FANTASY XIV © SQUARE ENIX CO., LTD.
           </div>
-          <div>
-            Assembled by Mayo Steakfries of Coeurl
+          <div className={styles.footerProd}>
+            Assembled by Mayo Steakfries of Coeurl.
           </div>
         </footer>
       </div>
