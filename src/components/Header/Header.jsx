@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import { userLogout } from '../../store/app'
-import { Icon } from '../'
+import { Avatar, Icon } from '../'
 import styles from './Header.module.scss'
 
 class Header extends React.Component {
@@ -21,6 +21,8 @@ class Header extends React.Component {
     const {
       location,
       authenticated,
+      activeCharacter,
+      characters,
     } = this.props
 
     return (
@@ -56,6 +58,11 @@ class Header extends React.Component {
               <button onClick={this.handleLogout}>
                 Log out
               </button>
+
+              <Avatar
+                classes={styles.avatar}
+                src={activeCharacter ? characters[activeCharacter].avatar : null}
+              />
             </React.Fragment>
           ) : (
             <React.Fragment>
@@ -88,6 +95,8 @@ Header.propTypes = {
 
 const mapStateToProps = (state) => ({
   authenticated: state.app.authenticated,
+  activeCharacter: state.app.activeCharacter,
+  characters: state.app.characters,
 })
 
 const mapDispatchToProps = (dispatch) => ({
