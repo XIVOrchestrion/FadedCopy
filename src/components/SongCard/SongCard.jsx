@@ -13,6 +13,7 @@ const SongCard = ({
   id,
   name,
   order,
+  tags,
   tracking,
   uiCat,
   uiId,
@@ -45,6 +46,13 @@ const SongCard = ({
       <div className={styles.desc}>
         { desc.en }
       </div>
+      <div className={styles.tags}>
+        {tags.map(item => (
+          <span className={styles.tag}>
+            { item }
+          </span>
+        ))}
+      </div>
     </div>
   )
 }
@@ -67,6 +75,7 @@ SongCard.propTypes = {
    */
   name: PropTypes.object,
   order: PropTypes.number,
+  tags: PropTypes.array,
   /**
    * If `true`, enables tracking and logging functionality
    */
@@ -78,6 +87,7 @@ SongCard.propTypes = {
 
 SongCard.defaultProps = {
   checked: false,
+  tags: ['default'],
   tracking: false,
 }
 
