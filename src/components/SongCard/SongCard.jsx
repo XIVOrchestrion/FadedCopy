@@ -48,7 +48,7 @@ const SongCard = ({
       </div>
       <div className={styles.tags}>
         {tags.map(item => (
-          <span className={styles.tag}>
+          <span className={[styles.tag, styles[item.toLowerCase().replace(' ', '')]].join(' ')}>
             { item }
           </span>
         ))}
