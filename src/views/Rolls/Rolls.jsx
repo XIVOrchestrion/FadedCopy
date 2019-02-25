@@ -44,7 +44,10 @@ class Rolls extends React.Component {
           </Alert>
         }
 
-        {Array.from(displaySongs).map(([key, value]) => (
+        {Array.from(displaySongs).map(([key, value]) => {
+          // Annoying workaround for no KEY information
+          key = key === null ? 0 : key
+          return (
           <section key={key}>
             <h2 className={styles.sectionTitle}>
               {categories[key].en}
@@ -62,7 +65,7 @@ class Rolls extends React.Component {
 
               return (
                 <SongCard
-                  key={item.id}
+                  key={item.name.en.replace(/ /g, '')}
                   {...item}
                   order={item.uiOrder}
                   {...extraProps}
@@ -70,7 +73,7 @@ class Rolls extends React.Component {
               )
             })}
           </section>
-        ))}
+        )})}
       </main>
     )
   }
