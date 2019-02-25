@@ -1,4 +1,10 @@
 export default {
+  0: {
+    de: 'Uncategorised',
+    en: 'Uncategorised',
+    fr: 'Uncategorised',
+    ja: 'Uncategorised',
+  },
   1: {
     de: 'Alle',
     en: 'All',
