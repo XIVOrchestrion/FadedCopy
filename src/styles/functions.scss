@@ -1,0 +1,12 @@
+/// Set text color
+@function setTextColor($bgColor, $threshold: 0.6) {
+  $red: calc(#{red($bgColor)} * 0.2126);
+  $green: calc(#{green($bgColor)} * 0.7152);
+  $blue: calc(#{blue($bgColor)} * 0.0722);
+  $sum: calc(#{$red} + #{$green} + #{$blue});
+  $lightness: calc(#{$sum} / 255);
+  $output: calc((#{$lightness} - #{$threshold}) * -10000000%);
+
+  $calc: hsl(0, 0%, $output);
+  @return $calc;
+}

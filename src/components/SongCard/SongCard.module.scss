@@ -1,4 +1,4 @@
-@import 'styles/variables';
+@import 'styles/_styles';
 
 .root {
   display: flex;
@@ -43,7 +43,7 @@
 
 .name {
   flex: 1 1 auto;
-  width: 36rem;
+  width: 26rem;
   margin-right: $spacing-base;
   font-weight: 600;
   font-family: $typeHeading;
@@ -62,7 +62,7 @@
 }
 
 .desc {
-  flex: 0 1 100%;
+  flex: 0 2 100%;
   font-family: 'IBM Plex Sans', sans-serif;
 
   .row & {
@@ -75,11 +75,40 @@
   }
 }
 
+.tags {
+  display: flex;
+  flex: 0 1 auto;
+  justify-content: flex-end;
+  width: 24rem;
+}
+
 .tag {
   padding: 4px 8px;
   background-color: $brandPrimary;
   color: $white;
   font-size: 12px;
   line-height: 14px;
+  text-transform: lowercase;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   border-radius: 4px;
+
+  & + & {
+    margin-left: 4px;
+  }
+
+  &.achievement     { background-color: $color-achievement; color: setTextColor($color-achievement); }
+  &.crafted         { background-color: $color-crafted; color: setTextColor($color-crafted); }
+  &.dungeon         { background-color: $color-dungeon; color: setTextColor($color-dungeon); }
+  &.fate            { background-color: $color-fate; color: setTextColor($color-fate); }
+  &.hunt            { background-color: $color-hunt; color: setTextColor($color-hunt); }
+  &.premium         { background-color: $color-premium; color: setTextColor($color-premium); }
+  &.purchase        { background-color: $color-purchase; color: setTextColor($color-purchase); }
+  &.quest           { background-color: $color-quest; color: setTextColor($color-quest); }
+  &.raid            { background-color: $color-raid; color: setTextColor($color-raid); }
+  &.seasonal        { background-color: $color-seasonal; color: setTextColor($color-seasonal); }
+  &.treasurehunt    { background-color: $color-treasurehunt; color: setTextColor($color-treasurehunt); }
+  &.trial           { background-color: $color-trial; color: setTextColor($color-trial); }
 }
+
+
