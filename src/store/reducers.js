@@ -3,8 +3,10 @@ import { appReducer } from './app'
 import { dashboardReducer } from './dashboard'
 import { settingsReducer } from './settings'
 
-export default combineReducers({
+const rootReducers = combineReducers({
   app: appReducer,
   dashboard: dashboardReducer,
   settings: settingsReducer,
 })
+
+export default rootReducers
