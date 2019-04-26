@@ -112,9 +112,9 @@ export const getProgress = () => (dispatch, getState) => {
   const authenticated = app.authenticated
   dispatch({ type: types.FETCH_PROGRESS_REQUEST })
   if (authenticated) {
-    firebaseStore.collection('obtained').doc(authenticated).get()
+    firebaseStore.collection('users').doc(authenticated).get()
       .then(doc => doc.data())
-      .then(res => dispatch(changeProgress(types.FETCH_PROGRESS_SUCCESS, res)))
+      .then(res => dispatch(changeProgress(types.FETCH_PROGRESS_SUCCESS, res.obtained)))
       .catch(error => dispatch(changeProgressFailure(error)))
   } else {
     dispatch({
@@ -140,8 +140,7 @@ const changeProgressFailure = (error) => ({
 
 export const updateTrack = (id, bool) => (dispatch, getState) => {
   const { app, dashboard } = getState()
-  const activeCharacter = app.activeCharacter
-  const obtained = dashboard.obtained[activeCharacter] ? dashboard.obtained[activeCharacter].slice(0) : []
+  const obtained = dashboard.obtained ? dashboard.obtained.slice(0) : []
   let newObtained
 
   if (obtained.includes(id))
@@ -149,16 +148,16 @@ export const updateTrack = (id, bool) => (dispatch, getState) => {
   else
     newObtained = obtained.concat([id])
 
-  dispatch(changeProgress(types.UPDATE_PROGRESS_REQUEST, {[activeCharacter]: newObtained}))
+  dispatch(changeProgress(types.UPDATE_PROGRESS_REQUEST, newObtained))
 
-  const userStore = firebaseStore.collection('obtained').doc(app.authenticated)
+  const userStore = firebaseStore.collection('users').doc(app.authenticated)
   userStore.get()
     .then(doc => {
       const post = {}
       if (bool)
-        post[`${activeCharacter}`] = firebaseStoreValue.arrayUnion(id)
+        post.obtained = firebaseStoreValue.arrayUnion(id)
       else
-        post[`${activeCharacter}`] = firebaseStoreValue.arrayRemove(id)
+        post.obtained = firebaseStoreValue.arrayRemove(id)
 
       userStore.update(post)
     })
@@ -170,7 +169,7 @@ export const updateTrack = (id, bool) => (dispatch, getState) => {
         type: types.UPDATE_PROGRESS_FAILURE,
         error: error,
         status: 'error',
-        obtained: {[activeCharacter]: obtained},
+        obtained: {obtained},
       })
     })
 }
