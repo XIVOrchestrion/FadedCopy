@@ -54,33 +54,35 @@ class App extends React.Component {
       <div className="App">
         <Header location={this.props.location} />
 
-        <Alert
-          type="warning"
-        >
-          Welcome to the FadedCopy ({ version }) ALPHA Test Site. Expect bugs everywhere.
-        </Alert>
+        <main>
+          <Alert
+            type="warning"
+          >
+            Welcome to the FadedCopy ({ version }) ALPHA Test Site. Expect bugs everywhere.
+          </Alert>
 
-        <Switch>
-          {routes.map(({path, component}, key) => (
-            <Route
-              key={key}
-              exact
-              path={path}
-              component={component}
-            />
-          ))}
+          <Switch>
+            {routes.map(({path, component}, key) => (
+              <Route
+                key={key}
+                exact
+                path={path}
+                component={component}
+              />
+            ))}
 
-          {privateRoutes.map(({path, component}, key) => (
-            <PrivateRoute
-              key={key}
-              exact
-              path={path}
-              component={component}
-            />
-          ))}
+            {privateRoutes.map(({path, component}, key) => (
+              <PrivateRoute
+                key={key}
+                exact
+                path={path}
+                component={component}
+              />
+            ))}
 
-          <Redirect from="/settings" to="/settings/profile" />
-        </Switch>
+            <Redirect from="/settings" to="/settings/profile" />
+          </Switch>
+        </main>
 
         <footer className={styles.footer}>
           <div className={styles.footerTm}>
