@@ -1,5 +1,4 @@
 import React from 'react'
-import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 // import { bindActionCreators } from 'redux'
 
@@ -9,15 +8,7 @@ class Home extends React.Component {
 
     return(
       <React.Fragment>
-        <div>
-          {this.props.authenticated ? (
-            <Redirect to="/rolls" />
-          ) : (
-            <main>
-              <h1>Hello World</h1>
-            </main>
-          )}
-        </div>
+        <h1>Hello World</h1>
       </React.Fragment>
     )
   }
